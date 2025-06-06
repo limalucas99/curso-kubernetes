@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exec
+  labels:
+    app: exec
+spec:
+  containers:
+    - name: exec
+      image: busybox
+      command: # => Entrypoint
+        - echo
+      args: # => CMD
+        - "Hello, Kubernetes!"

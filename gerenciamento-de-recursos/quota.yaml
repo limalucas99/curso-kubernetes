@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: recurso-computacional
+  namespace: homologacao
+spec:
+  hard:
+    requests.cpu: "4" # No máximo 4 CPUs somando todos os pods do namespace
+    requests.memory: "8Gi" # No máximo 8GB de memória
+    limits.cpu: "10" # No máximo 10 CPUs alocados no namespace
+    limits.memory: "16Gi" # No máximo 16GB de memória alocados no namespace
+    pods: "20" # No máximo 20 pods podem existir no namespace

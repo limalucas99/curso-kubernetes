@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simulador-do-caos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simulador-do-caos
+  template:
+    metadata:
+      labels:
+        app: simulador-do-caos
+      annotation:
+        aplicacao: valor
+    spec:
+      containers:
+        - name: simulador-do-caos
+          image: kubedevio/simulador-do-caos:v1
+          ports:
+            - containerPort: 3000
+          startupProbe:
+            httpGet:
+              port: 3000
+              path: /health
+            periodSeconds: 10
+            failureThreshold: 30 # -> 300s 5 minutos
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simulador-do-caos
+spec:
+  selector:
+    app: simulador-do-caos
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 3000
+      name: http
+      protocol: TCP
+      nodePort: 30000

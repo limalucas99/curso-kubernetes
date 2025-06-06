@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cron-sorteador
+spec:
+  schedule: "*/1 * * * *" # A cada minuto
+  successfulJobsHistoryLimit: 4
+  failedJobsHistoryLimit: 3
+  suspend: false
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 100
+      completions: 2
+      parallelism: 2
+      backoffLimit: 10
+      template:
+        metadata:
+          labels:
+            app: sorteador
+        spec:
+          containers:
+            - name: sorteador
+              image: fabricioveronez/sorteador:v1
+              env:
+                - name: NUM_ESCOLHIDO
+                  value: "3"
+                - name: NUM_MAXIMO
+                  value: "4"
+                - name: DELAY_SORTEIO
+                  value: "10"
+          restartPolicy: Never
+# Toda meia noite do primeiro dia do mês, o job é executado
+
+# 0 0 1 * *

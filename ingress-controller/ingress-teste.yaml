@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minha-aplicacao-ingress
+  namespace: default # Ajuste o namespace se necessário
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx # Isso garante que o Ingress será gerido pelo ingress-nginx
+  rules:
+    - host: "" # Permite acesso via IP. Se você tiver um domínio, substitua "" pelo domínio.
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kubernetes # Substitua pelo nome do seu Service
+                port:
+                  number: 80 # Ajuste a porta conforme necessário
